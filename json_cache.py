@@ -9,17 +9,10 @@ TTL =600
 
 _expired = datetime.datetime.now() + datetime.timedelta(seconds=ttl)
 
-def dump_json_data(filepath, data):
-    with open(filepath, mode='w', encoding='utf-8') as f:
-        json.dump(data, f)
 
 
-def load_json_data(filepath):
-    # Return the dictionary of bars
-    if not os.path.exists(filepath):
-        return None
-    with open(filepath, encoding='utf8') as file_handler:
-        return json.load(file_handler)
+
+
 
 
 def get_trending_repositories(url, days_interval, repositories_limit):
@@ -56,37 +49,73 @@ def get_open_issues_amount(repo_owner, repo_name):
 
 class BaseCache(object):
     """Abstract class for caching decorator"""
+    file_path = 'cache_json.txt'
+    ttl = 20
+    expired = None
 
-    def __init__(self, cache_file_path='cache.json', ttl=60):
-        with open(cache_file_path, 'tw', encoding='utf-8') as f:
-            pass
-        self.ttl = ttl
+    def __init__(self, file_path='cache.json', ttl=60):
+        with open(cache_file_path, 'tw', encoding='utf-8') as file_handler:
+            try:
+                self.expired = json.load(file_handler)['expired']
+            except NameError:
+                print('Это что ещё такое?')
+                self.expired = None
+            self.ttl = ttl
+            self.file_path = file_path
 
 
-        load_json_data(cache_file)
-        self.ttl = ttl
+    def dump_json_data(self, data):
+        with open(self.file_path, mode='w', encoding='utf-8') as file_handler:
+            json.dump(data, file_handler)
 
-    def dump_json_data(filepath, data):
-        with open(filepath, mode='w', encoding='utf-8') as f:
-            json.dump(data, f)
+    def load_json_data(self):
+        # Return the dictionary of bars
+        if not os.path.exists(self.file_path):
+            return None
+        with open(self.file_path, encoding='utf8') as file_handler:
+            return json.load(file_handler)
 
     def __call__(self, func):
         def wrapper(*args, **kwargs):
-            result = self.backend.get_data(chash, ttl=self.ttl)
-
+            if self.check_expired():
+                load_json_data
+            if load_json_data(cache_file)
             if result is not None:
                 return result
             else:
-                result = func(*args, **kwargs)
-                self.backend.store_data(chash, result, key=self.key,
-                                        ttl=self.ttl, noc=self.noc, ncalls=0)
-            if isinstance(self.backend, FileBackend):
-                self.backend.sync()
+                func
             return result
         return wrapper
+
+
+    def store_data(self, data):
+        if not self.expired:
+            self.expired = datetime.datetime.now() + datetime.timedelta(seconds=self.ttl)
+        data['expired'] = self.expired
+        data['cache'] = data
+        self.dump_json_data(data)
+
+
+    def check_expired(self):
+        if self.expired:
+            if self.expired < datetime.datetime.now():
+                return False
+            else:
+                return True
+
+
+    def get_data(self):
+        if self.check_expired():
+
+
+        datetime.datetime.now().timestamp()
+        if ttl and datetime.datetime.now().timestamp() > res[1]:
+            res = None
+            del self[chash]
 
 class Cache(BaseCache):
     '''Caching decorator constructor'''
 
 
 if __name__ == '__main__':
+    print(get_open_issues_amount('developit', 'mitt'))

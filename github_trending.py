@@ -50,9 +50,9 @@ def output_repositories_and_issues(repositories_and_issues):
                   (repo.owner, repo.name, repo.url, len(repo.issues)))
             if (repo.issues):
                 for issue in repo.issues:
-                    print('\t\t'+issue['url'])
+                    print('\t\t %s' % issue['url'])
             else:
-                print('\t\tThere are no open issues.')
+                print('\t\t There are no open issues.')
 
 if __name__ == '__main__':
     repos = get_trending_repositories(URL, DAYS_INTERVAL, REPOSITORIES_LIMIT)

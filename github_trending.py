@@ -48,7 +48,8 @@ def get_repositories_and_issues(repositories_info):
 def output_repositories_and_issues(repositories_and_issues):
         for repo in repositories_and_issues:
             repo = repository_info_class(*repo)
-            print(' \n owner: %s \n name: %s \n url: %s \n\n \t\t Open %d issues:' % (repo.owner, repo.name, repo.url, len(repo.issues)))
+            print(' \n owner: %s \n name: %s \n url: %s \n\n \t\t Open %d issues:' %
+                  (repo.owner, repo.name, repo.url, len(repo.issues)))
             if (repo.issues):
                 for issue in repo.issues:
                     print('\t\t'+issue['url'])

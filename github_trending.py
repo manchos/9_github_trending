@@ -7,14 +7,15 @@ import os
 #from cachepy import Cache
 import time
 import datetime
+from json_cache import Cache
 
 from functools import lru_cache
 
 URL = 'https://api.github.com'
 DAYS_INTERVAL = 7
 REPOSITORIES_LIMIT = 20
-# repo_cache = Cache('cache_repo.dat', ttl=600)
-# repo_and_issues = Cache('cache_repo_and_issues.dat', ttl=600)
+repo_cache = Cache('cache_repo.json', ttl=600)
+repo_and_issues = Cache('cache_repo_and_issues.json', ttl=600)
 
 repository_info_class = namedtuple('RepoInfo', ['owner', 'name', 'url', 'issues_amount'])
 
@@ -22,7 +23,7 @@ repository_info_class = namedtuple('RepoInfo', ['owner', 'name', 'url', 'issues_
 #os.stat('/file1.txt').st_mtime
 
 
-#@repo_cache
+@repo_cache
 def get_trending_repositories(url, days_interval, repositories_limit):
     search_url = urljoin(url, 'search/repositories')
     days_ago = (date.today() - timedelta(days=days_interval)).isoformat()
@@ -41,7 +42,7 @@ def get_open_issues_amount(repo_owner, repo_name):
     return [repo_issue for repo_issue in repo_issues_list if 'pull_request' not in repo_issue]
 
 
-#@repo_and_issues
+@repo_and_issues
 def get_repositories_and_issues(repositories_info):
     repositories_and_issues = []
     for repo in repositories_info:

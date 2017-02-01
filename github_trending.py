@@ -4,8 +4,6 @@ from datetime import date, timedelta
 from collections import namedtuple
 from json_cache import Cache
 
-
-
 URL = 'https://api.github.com'
 DAYS_INTERVAL = 7
 REPOSITORIES_LIMIT = 20

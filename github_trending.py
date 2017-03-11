@@ -3,6 +3,7 @@ from urllib.parse import urljoin
 from datetime import date, timedelta
 from collections import namedtuple
 from json_cache import Cache
+import argparse
 
 URL = 'https://api.github.com'
 DAYS_INTERVAL = 7
@@ -55,6 +56,9 @@ def output_repositories_and_issues(repositories_and_issues):
                 print('\t\t There are no open issues.')
 
 if __name__ == '__main__':
-    repos = get_trending_repositories(URL, DAYS_INTERVAL, REPOSITORIES_LIMIT)
+    parser = argparse.ArgumentParser(description="Displays 20 the most popular repositories")
+    parser.add_argument("-c", "--clear_cache", default='', type=str, dest="clear_cache", help="Clear cache file")
+    args = parser.parse_args()
+    repos = get_trending_repositories(args.clear_cache, URL, DAYS_INTERVAL, REPOSITORIES_LIMIT)
     repos_and_issues = get_repositories_and_issues(repos)
     output_repositories_and_issues(repos_and_issues)

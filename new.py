@@ -24,7 +24,9 @@ def get_trending_repositories(url):
 
 
 if __name__ == '__main__':
-    requests_cache.install_cache('page_cache', backend='sqlite', expire_after=300)
+    requests_cache.install_cache('page_cache', backend='sqlite', expire_after=10)
+    # requests_cache.clear()
+
     days_interval, repositories_limit, url = DAYS_INTERVAL, REPOSITORIES_LIMIT, URL
     search_url = urljoin(url, 'search/repositories')
 
@@ -34,7 +36,12 @@ if __name__ == '__main__':
               'per_page': str(repositories_limit),
               'order': 'desc'
               }
-    repositories_info = requests.get(search_url, params=params).json()["items"]
+    #requests_cache.clear()
+    r = requests.get(search_url, params=params)
+    print(r.from_cache)
+
+    repositories_info = r.json()["items"]
+
 
     # html = requests.get(URL)
     print(repositories_info)

@@ -34,7 +34,7 @@ def get_trending_repositories(url, days_interval, repositories_limit):
     return repositories_info
 
 
-def get_open_issues_amount(repo_owner, repo_name):
+def get_open_issues(repo_owner, repo_name):
     git_request = requests.get('https://api.github.com/repos/{}/{}/issues'.format(repo_owner, repo_name))
     repo_issues_list = git_request.json()
     return [repo_issue for repo_issue in repo_issues_list if 'pull_request' not in repo_issue]
@@ -43,10 +43,10 @@ def get_open_issues_amount(repo_owner, repo_name):
 @repo_and_issues
 def get_repositories_and_issues(repositories_info):
     repositories_and_issues = []
-    for repo in repositories_info:
-        issues = get_open_issues_amount(repo['owner']['login'], repo['name'])
-        repositories_and_issues.\
-            append(repository_info_class(repo['owner']['login'], repo['name'], repo["html_url"], issues))
+    for i, repo in enumerate(repositories_info):
+        owner, repo_name = repo['owner']['login'], repo['name']
+        issues = get_open_issues(owner, repo_name)
+        repositories_and_issues.append(repository_info_class(owner, repo_name, repo["html_url"], issues))
     return repositories_and_issues
 
 

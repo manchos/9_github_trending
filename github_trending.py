@@ -31,6 +31,10 @@ def get_trending_repositories(url, days_interval, repositories_limit):
               'order': 'desc'
               }
     repositories_info = requests.get(search_url, params=params).json()["items"]
+
+
+
+
     return repositories_info
 
 
@@ -50,6 +54,8 @@ def get_repositories_and_issues(repositories_info):
     return repositories_and_issues
 
 
+
+
 def output_repositories_and_issues(repositories_and_issues):
         for repo in repositories_and_issues:
             repo = repository_info_class(*repo)
@@ -63,7 +69,8 @@ def output_repositories_and_issues(repositories_and_issues):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Displays 20 the most popular repositories")
-    parser.add_argument("-c", "--clear_cache", default='', type=str, dest="clear_cache", help="Clear cache file")
+    parser.add_argument("-cashetime", "--clear_time", default='', type=str, dest="cache_time", help="Clear cache file")
+    parser.add_argument('-clearcache', '--clear_cache', action='store_true', help='Clear cache file"')
     args = parser.parse_args()
     repos = get_trending_repositories(URL, DAYS_INTERVAL, REPOSITORIES_LIMIT)
     repos_and_issues = get_repositories_and_issues(repos)

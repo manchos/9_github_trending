@@ -12,7 +12,6 @@ Run the script
 ```#!bash
 $ python github_trending.py
 
-
 optional arguments:
   -h, --help            show this help message and exit
   -cachetime CACHE_TIME, --cache_time CACHE_TIME

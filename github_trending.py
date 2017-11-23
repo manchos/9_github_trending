@@ -44,7 +44,7 @@ def output_repositories(repositories_namedtuple):
     for index, repo in enumerate(repositories_namedtuple):
         # repo = repository_info_class(*repo)
         print(
-            '\n\n {number} '
+            '\n {number} '
             '\n\t owner: {repo.owner}'
             '\n\t name: {repo.name}'
             '\n\t url: {repo.url}'

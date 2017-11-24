@@ -15,10 +15,8 @@ $ python github_trending.py
 
 optional arguments:
   -h, --help            show this help message and exit
-  -cachetime CACHE_TIME, --cache_time CACHE_TIME
-                        Set cache time interval
-  -clearcache, --clear_cache
-                        Clear cache file
+  -cachetime CACHE_TIME set cache time interval
+  -clearcache           clear cache file
 ```
 
 and get repositories like this:

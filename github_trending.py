@@ -4,6 +4,7 @@ from datetime import date, timedelta
 from collections import namedtuple
 import argparse
 import json
+import os
 
 repository_info_class = namedtuple('RepoInfo', ['owner', 'name', 'url', 'issues'])
 
@@ -54,9 +55,13 @@ if __name__ == '__main__':
                         dest="cache_time", help="Set cache time interval")
     parser.add_argument('-clearcache', '--clear_cache', action='store_true', help='Clear cache file')
 
+    if not os.path.exists('_cache'):
+        os.mkdir('_cache')
     requests_cache.install_cache('_cache/page_cache', backend='sqlite', expire_after=parser.parse_args().cache_time)
+
     if parser.parse_args().clear_cache:
         requests_cache.clear()
+
 
     repositories_json = get_repositories_json('https://api.github.com/search/repositories', 7, 20)
     if repositories_json is None:

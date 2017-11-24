@@ -36,7 +36,6 @@ def get_open_issues(repo_owner, repo_name):
 
 def output_repositories(repositories_namedtuple):
     for index, repo in enumerate(repositories_namedtuple):
-        # repo = repository_info_class(*repo)
         print(
             '\n {number} '
             '\n\t owner: {repo.owner}'

@@ -38,4 +38,6 @@ url: url_repository
 
 Python >= 3.5
 
-requests==2.11.1
+requests==2.18.4
+
+request_cache==0.4.13

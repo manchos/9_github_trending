@@ -13,7 +13,7 @@ def get_repositories_json(url, days_interval, repositories_limit, sort='stars', 
     days_ago = (date.today() - timedelta(days=days_interval)).isoformat()
     params = {'q': 'created:>{}'.format(days_ago),
               'sort': sort,
-              'per_page': str(repositories_limit),
+              'per_page': repositories_limit,
               'order': order
               }
     try:
@@ -36,34 +36,44 @@ def get_open_issues(repo_owner, repo_name):
 
 
 def output_repositories(repositories_namedtuple):
-    for index, repo in enumerate(repositories_namedtuple):
+    for index, repo in enumerate(repositories_namedtuple, start=1):
         print(
             '\n {number} '
             '\n\t owner: {repo.owner}'
             '\n\t name: {repo.name}'
             '\n\t url: {repo.url}'
-            '\n\t\t\t Open {N} issues:'.format(number=index+1, repo=repo, N=len(repo.issues))
+            '\n\t\t\t Open {N} issues:'.format(number=index, repo=repo, N=len(repo.issues))
         )
         if repo.issues:
             for issue in repo.issues:
                 print('\t\t %s' % issue['url'])
 
-
-if __name__ == '__main__':
+def set_cli_argument_parse():
     parser = argparse.ArgumentParser(description="Displays 20 the most popular repositories")
     parser.add_argument("-cachetime", "--cache_time", default=600, type=int,
                         dest="cache_time", help="Set cache time interval")
     parser.add_argument('-clearcache', '--clear_cache', action='store_true', help='Clear cache file')
+    return parser
+
+
+
+if __name__ == '__main__':
+    URL = 'https://api.github.com/search/repositories'
+    DAYS_INTERVAL = 7
+    REPOSITORIES_LIMIT = 20
+
+    cli_argument_parser = set_cli_argument_parse()
 
     if not os.path.exists('_cache'):
         os.mkdir('_cache')
-    requests_cache.install_cache('_cache/page_cache', backend='sqlite', expire_after=parser.parse_args().cache_time)
+    requests_cache.install_cache('_cache/page_cache', backend='sqlite',
+                                 expire_after=cli_argument_parser.parse_args().cache_time)
 
-    if parser.parse_args().clear_cache:
+    if cli_argument_parser.parse_args().clear_cache:
         requests_cache.clear()
 
 
-    repositories_json = get_repositories_json('https://api.github.com/search/repositories', 7, 20)
+    repositories_json = get_repositories_json(URL, DAYS_INTERVAL, REPOSITORIES_LIMIT)
     if repositories_json is None:
         print('Ошибочные входные данные. Проверьте наличие корректных внешних данных')
     else:

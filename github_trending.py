@@ -48,13 +48,13 @@ def output_repositories(repositories_namedtuple):
             for issue in repo.issues:
                 print('\t\t %s' % issue['url'])
 
+
 def set_cli_argument_parse():
     parser = argparse.ArgumentParser(description="Displays 20 the most popular repositories")
     parser.add_argument("-cachetime", "--cache_time", default=600, type=int,
                         dest="cache_time", help="Set cache time interval")
     parser.add_argument('-clearcache', '--clear_cache', action='store_true', help='Clear cache file')
     return parser.parse_args()
-
 
 
 if __name__ == '__main__':

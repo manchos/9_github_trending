@@ -58,10 +58,6 @@ def set_cli_argument_parse():
 
 
 if __name__ == '__main__':
-    URL = 'https://api.github.com/search/repositories'
-    DAYS_INTERVAL = 7
-    REPOSITORIES_LIMIT = 20
-
     cli_argument_parser = set_cli_argument_parse()
 
     if not os.path.exists('_cache'):
@@ -72,8 +68,8 @@ if __name__ == '__main__':
     if cli_argument_parser.clear_cache:
         requests_cache.clear()
 
-
-    repositories_json = get_repositories_json(URL, DAYS_INTERVAL, REPOSITORIES_LIMIT)
+    repositories_json = get_repositories_json(url='https://api.github.com/search/repositories',
+                                              days_interval=7, repositories_limit=20)
     if repositories_json is None:
         print('Ошибочные входные данные. Проверьте наличие корректных внешних данных')
     else:
